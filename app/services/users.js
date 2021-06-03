@@ -7,8 +7,9 @@ const create = async user => {
   try {
     const hash = await bcrypt.hash(user.password, 12);
     const createdUser = (await userModel.create({ ...user, password: hash })).toJSON();
-    delete createdUser.password;
-    return createdUser;
+    // eslint-disable-next-line no-unused-vars
+    const { password, ...responseUser } = createdUser;
+    return responseUser;
   } catch (error) {
     logger.error(error);
     throw databaseError('Cannot create user');
@@ -17,12 +18,8 @@ const create = async user => {
 
 const findByEmail = async email => {
   try {
-    const user = await userModel.findOne({
-      attributes: { exclude: ['password'] },
-      where: { email }
-    });
-    if (user) return user.toJSON();
-    return user;
+    const user = await userModel.findOne({ where: { email } });
+    return user ? user.toJSON() : user;
   } catch (error) {
     logger.error(error);
     throw databaseError('Cannot get user');

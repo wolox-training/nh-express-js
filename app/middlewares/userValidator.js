@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const errors = require('../errors');
 const logger = require('../logger');
+const { EMAIL_REGEX } = require('../../config/constants');
 
 const userSchema = Joi.object({
   name: Joi.string()
@@ -13,7 +14,7 @@ const userSchema = Joi.object({
 
   email: Joi.string()
     .email()
-    .pattern(/^(\w|\.)+@wolox\.(com\.ar|co|mx|cl)$/)
+    .pattern(EMAIL_REGEX)
     .required(),
 
   password: Joi.string()

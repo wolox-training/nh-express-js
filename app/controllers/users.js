@@ -1,14 +1,15 @@
 const errors = require('../errors');
 const logger = require('../logger');
 const usersService = require('../services/users');
+const { EMAIL_CONFLICT } = require('../../config/constants');
 
 const signUp = async (req, res, next) => {
   const userData = req.body;
   try {
     const userFound = await usersService.findByEmail(userData.email);
     if (userFound) {
-      logger.error('The email provided is already linked to an account');
-      return next(errors.conflict('The email provided is already linked to an account'));
+      logger.error(EMAIL_CONFLICT);
+      return next(errors.conflict(EMAIL_CONFLICT));
     }
     const createdUser = await usersService.create(userData);
     logger.info(createdUser.email);
