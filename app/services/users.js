@@ -2,17 +2,17 @@ const bcrypt = require('bcryptjs');
 const logger = require('../logger');
 const { databaseError } = require('../errors');
 const { user: userModel } = require('../models');
+const { serializeUser } = require('../serializers/users');
+const { USER_CREATE_ERROR, USER_FIND_ERROR } = require('../../config/constants');
 
 const create = async user => {
   try {
     const hash = await bcrypt.hash(user.password, 12);
     const createdUser = (await userModel.create({ ...user, password: hash })).toJSON();
-    // eslint-disable-next-line no-unused-vars
-    const { password, ...responseUser } = createdUser;
-    return responseUser;
+    return serializeUser(createdUser);
   } catch (error) {
     logger.error(error);
-    throw databaseError('Cannot create user');
+    throw databaseError(USER_CREATE_ERROR);
   }
 };
 
@@ -22,7 +22,7 @@ const findByEmail = async email => {
     return user ? user.toJSON() : user;
   } catch (error) {
     logger.error(error);
-    throw databaseError('Cannot get user');
+    throw databaseError(USER_FIND_ERROR);
   }
 };
 
