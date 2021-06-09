@@ -8,3 +8,9 @@ exports.databaseError = message => internalError(message, exports.DATABASE_ERROR
 
 exports.DEFAULT_ERROR = 'default_error';
 exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
+
+exports.CONFLICT = 'conflict';
+exports.conflict = message => internalError(message, exports.CONFLICT);
+
+exports.FORBIDDEN = 'forbidden';
+exports.forbidden = message => internalError(message, exports.FORBIDDEN);
