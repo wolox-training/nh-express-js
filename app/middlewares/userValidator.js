@@ -1,21 +1,19 @@
 const Joi = require('joi');
 const errors = require('../errors');
 const logger = require('../logger');
-const { EMAIL_REGEX } = require('../../config/constants');
+const { joiErrorMapper } = require('../helpers/errors');
+const { EMAIL_REGEX, EMAIL_ERROR } = require('../../config/constants');
 
 const userSchema = Joi.object({
-  name: Joi.string()
-    .alphanum()
-    .required(),
+  name: Joi.string().required(),
 
-  last_name: Joi.string()
-    .alphanum()
-    .required(),
+  last_name: Joi.string().required(),
 
   email: Joi.string()
     .email()
     .pattern(EMAIL_REGEX)
-    .required(),
+    .required()
+    .messages({ 'string.pattern.base': EMAIL_ERROR }),
 
   password: Joi.string()
     .alphanum()
@@ -27,7 +25,8 @@ const validateUser = (req, res, next) => {
   const { error } = userSchema.validate(req.body);
   if (error) {
     logger.error(error);
-    return next(errors.forbidden(error));
+    const mappedErrors = joiErrorMapper(error);
+    return next(errors.forbidden(mappedErrors));
   }
   return next();
 };
