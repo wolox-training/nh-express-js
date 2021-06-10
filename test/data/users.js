@@ -1,5 +1,5 @@
-const { CONFLICT, FORBIDDEN } = require('../../app/errors');
-const { EMAIL_CONFLICT, EMAIL_ERROR } = require('../../config/constants');
+const { CONFLICT, FORBIDDEN, UNAUTHORIZED } = require('../../app/errors');
+const { EMAIL_CONFLICT, EMAIL_ERROR, USER_CREDENTIALS_ERROR } = require('../../config/constants');
 
 const newUser = {
   name: 'Nicolas Alberto',
@@ -38,6 +38,25 @@ const missingDataError = {
   internal_code: FORBIDDEN
 };
 
+const newUserLogin = {
+  email: newUser.email,
+  password: newUser.password
+};
+
+const unknownEmail = 'john.doe@wolox.co';
+
+const credentialsError = {
+  message: USER_CREDENTIALS_ERROR,
+  internal_code: UNAUTHORIZED
+};
+
+const wrongPassword = 'pass12345';
+
+const missingLoginError = {
+  message: ['"email" is required'],
+  internal_code: FORBIDDEN
+};
+
 module.exports = {
   newUser,
   newUserRes,
@@ -46,5 +65,10 @@ module.exports = {
   badPasswordError,
   externalEmail,
   externalEmailError,
-  missingDataError
+  missingDataError,
+  newUserLogin,
+  unknownEmail,
+  credentialsError,
+  wrongPassword,
+  missingLoginError
 };
