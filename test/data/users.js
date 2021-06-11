@@ -52,9 +52,14 @@ const credentialsError = {
 
 const wrongPassword = 'pass12345';
 
+const externalEmailLogin = {
+  message: [EMAIL_ERROR],
+  internal_code: UNAUTHORIZED
+};
+
 const missingLoginError = {
   message: ['"email" is required'],
-  internal_code: FORBIDDEN
+  internal_code: UNAUTHORIZED
 };
 
 module.exports = {
@@ -70,5 +75,6 @@ module.exports = {
   unknownEmail,
   credentialsError,
   wrongPassword,
+  externalEmailLogin,
   missingLoginError
 };

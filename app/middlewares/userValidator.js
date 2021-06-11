@@ -49,7 +49,7 @@ const validateEmailPassword = (req, res, next) => {
   if (error) {
     logger.error(error);
     const mappedErrors = joiErrorMapper(error);
-    return next(errors.forbidden(mappedErrors));
+    return next(errors.unauthorized(mappedErrors));
   }
   return next();
 };

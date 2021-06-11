@@ -13,6 +13,7 @@ const {
   unknownEmail,
   credentialsError,
   wrongPassword,
+  externalEmailLogin,
   missingLoginError
 } = require('./data/users');
 
@@ -143,7 +144,7 @@ describe('Users', () => {
         .expect('Content-Type', /json/)
         .expect(403)
         .then(res => {
-          expect(res.body).toEqual(externalEmailError);
+          expect(res.body).toEqual(externalEmailLogin);
           done();
         })
         .catch(err => done(err));
