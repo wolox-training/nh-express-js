@@ -14,3 +14,6 @@ exports.conflict = message => internalError(message, exports.CONFLICT);
 
 exports.FORBIDDEN = 'forbidden';
 exports.forbidden = message => internalError(message, exports.FORBIDDEN);
+
+exports.UNAUTHORIZED = 'unauthorized';
+exports.unauthorized = message => internalError(message, exports.UNAUTHORIZED);

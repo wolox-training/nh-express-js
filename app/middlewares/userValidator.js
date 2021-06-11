@@ -21,6 +21,19 @@ const userSchema = Joi.object({
     .required()
 });
 
+const emailPasswordSchema = Joi.object({
+  email: Joi.string()
+    .email()
+    .pattern(EMAIL_REGEX)
+    .required()
+    .messages({ 'string.pattern.base': EMAIL_ERROR }),
+
+  password: Joi.string()
+    .alphanum()
+    .min(8)
+    .required()
+});
+
 const validateUser = (req, res, next) => {
   const { error } = userSchema.validate(req.body);
   if (error) {
@@ -31,6 +44,17 @@ const validateUser = (req, res, next) => {
   return next();
 };
 
+const validateEmailPassword = (req, res, next) => {
+  const { error } = emailPasswordSchema.validate(req.body);
+  if (error) {
+    logger.error(error);
+    const mappedErrors = joiErrorMapper(error);
+    return next(errors.unauthorized(mappedErrors));
+  }
+  return next();
+};
+
 module.exports = {
-  validateUser
+  validateUser,
+  validateEmailPassword
 };

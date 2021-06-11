@@ -15,6 +15,17 @@ module.exports = {
     type: 'string',
     example: 'aPassword1'
   },
+  Login: {
+    type: 'object',
+    properties: {
+      email: {
+        $ref: '#/components/schemas/email'
+      },
+      password: {
+        $ref: '#/components/schemas/password'
+      }
+    }
+  },
   User: {
     type: 'object',
     properties: {
