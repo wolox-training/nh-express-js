@@ -26,10 +26,7 @@ const findByEmail = async email => {
   }
 };
 
-const checkPassword = async (user, password) => {
-  const valid = await bcrypt.compare(password, user.password);
-  return valid;
-};
+const checkPassword = (user, password) => bcrypt.compare(password, user.password);
 
 module.exports = {
   create,

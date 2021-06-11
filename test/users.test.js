@@ -142,7 +142,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send({ ...newUserLogin, email: externalEmail })
         .expect('Content-Type', /json/)
-        .expect(403)
+        .expect(401)
         .then(res => {
           expect(res.body).toEqual(externalEmailLogin);
           done();
@@ -154,7 +154,7 @@ describe('Users', () => {
       await request(app)
         .post('/users/sessions')
         .expect('Content-Type', /json/)
-        .expect(403)
+        .expect(401)
         .then(res => {
           expect(res.body).toEqual(missingLoginError);
           done();
