@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const { generateUsers } = require('./factory/users');
 const {
   newUser,
   newUserRes,
@@ -14,12 +15,96 @@ const {
   credentialsError,
   wrongPassword,
   externalEmailLogin,
-  missingLoginError
+  missingLoginError,
+  noTokenError,
+  invalidToken,
+  invalidTokenError
 } = require('./data/users');
 
 describe('Users', () => {
   beforeEach(() => {
     jest.resetModules();
+  });
+
+  describe('GET /users', () => {
+    let token = '';
+    beforeEach(async () => {
+      await generateUsers(50);
+
+      await request(app)
+        .post('/users')
+        .send(newUser);
+      const auth = await request(app)
+        .post('/users/sessions')
+        .send(newUserLogin);
+      ({ token } = auth.body);
+    });
+
+    it('should get users when no pagination parameter is given', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body).toHaveLength(25);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get users when per_page is changed', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', token)
+        .query({ per_page: 20 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body).toHaveLength(20);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get users when per_page and page are changed', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', token)
+        .query({ per_page: 20, page: 3 })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body).toHaveLength(11);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get an error when no token is sent', async done => {
+      await request(app)
+        .get('/users')
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .then(res => {
+          expect(res.body).toEqual(noTokenError);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get an error when invalid token is sent', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', invalidToken)
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .then(res => {
+          expect(res.body).toEqual(invalidTokenError);
+          done();
+        })
+        .catch(err => done(err));
+    });
   });
 
   describe('POST /users', () => {

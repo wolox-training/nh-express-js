@@ -1,5 +1,40 @@
 module.exports = {
   '/users': {
+    get: {
+      tags: ['CRUD operations'],
+      description: 'List Users',
+      operationId: 'listUsers',
+      parameters: [
+        {
+          $ref: '#/components/schemas/per_page'
+        },
+        {
+          $ref: '#/components/schemas/page'
+        },
+        {
+          $ref: '#/components/schemas/authorization'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Got a list of users'
+        },
+        401: {
+          description: 'Not authorized',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              },
+              example: {
+                message: 'Invalid or expired token',
+                internal_code: 'unauthorized'
+              }
+            }
+          }
+        }
+      }
+    },
     post: {
       tags: ['CRUD operations'],
       description: 'Sign Up',

@@ -1,4 +1,27 @@
 module.exports = {
+  per_page: {
+    name: 'per_page',
+    in: 'query',
+    type: 'integer',
+    example: 42,
+    required: false
+  },
+  page: {
+    name: 'page',
+    in: 'query',
+    type: 'integer',
+    example: 2,
+    required: false
+  },
+  authorization: {
+    name: 'Authorization',
+    in: 'header',
+    schema: {
+      type: 'string'
+    },
+    example: 'token',
+    required: true
+  },
   name: {
     type: 'string',
     example: 'Tom'
