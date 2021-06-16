@@ -43,7 +43,20 @@ const signIn = async (req, res, next) => {
   }
 };
 
+const listUsers = async (req, res, next) => {
+  const per_page = req.query.per_page || 25;
+  const page = req.query.page || 1;
+  try {
+    const users = await usersService.getAll(per_page, page);
+    return res.status(200).send(users);
+  } catch (err) {
+    logger.error(err.message);
+    return next(err);
+  }
+};
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  listUsers
 };

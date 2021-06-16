@@ -1,5 +1,12 @@
 const { CONFLICT, FORBIDDEN, UNAUTHORIZED } = require('../../app/errors');
-const { EMAIL_CONFLICT, EMAIL_ERROR, USER_CREDENTIALS_ERROR } = require('../../config/constants');
+const {
+  EMAIL_CONFLICT,
+  EMAIL_ERROR,
+  USER_CREDENTIALS_ERROR,
+  NO_TOKEN_ERROR,
+  INVALID_TOKEN_ERROR,
+  BEARER_ERROR
+} = require('../../config/constants');
 
 const newUser = {
   name: 'Nicolas Alberto',
@@ -62,6 +69,25 @@ const missingLoginError = {
   internal_code: UNAUTHORIZED
 };
 
+const noTokenError = {
+  message: NO_TOKEN_ERROR,
+  internal_code: UNAUTHORIZED
+};
+
+const invalidToken = 'Bearer notvalid';
+
+const invalidTokenError = {
+  message: INVALID_TOKEN_ERROR,
+  internal_code: UNAUTHORIZED
+};
+
+const notBearerToken = 'Basic notvalid';
+
+const notBearerTokenError = {
+  message: BEARER_ERROR,
+  internal_code: UNAUTHORIZED
+};
+
 module.exports = {
   newUser,
   newUserRes,
@@ -76,5 +102,10 @@ module.exports = {
   credentialsError,
   wrongPassword,
   externalEmailLogin,
-  missingLoginError
+  missingLoginError,
+  noTokenError,
+  invalidToken,
+  invalidTokenError,
+  notBearerToken,
+  notBearerTokenError
 };
