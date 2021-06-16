@@ -24,9 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true
     }
   );
-
   Weet.associate = models => {
-    Weet.belongsTo(models.User, { foreignKey: 'userId' });
+    Weet.belongsTo(models.user, { foreignKey: 'user_id' });
   };
 
   return Weet;
