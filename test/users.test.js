@@ -18,7 +18,9 @@ const {
   missingLoginError,
   noTokenError,
   invalidToken,
-  invalidTokenError
+  invalidTokenError,
+  notBearerToken,
+  notBearerTokenError
 } = require('./data/users');
 
 describe('Users', () => {
@@ -38,6 +40,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send(newUserLogin);
       ({ token } = auth.body);
+      token = `Bearer ${token}`;
     });
 
     it('should get users when no pagination parameter is given', async done => {
@@ -101,6 +104,32 @@ describe('Users', () => {
         .expect(401)
         .then(res => {
           expect(res.body).toEqual(invalidTokenError);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get an error when not a Bearer token is given', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', notBearerToken)
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .then(res => {
+          expect(res.body).toEqual(notBearerTokenError);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get an error when Bearer is given with no token', async done => {
+      await request(app)
+        .get('/users')
+        .set('Authorization', 'Bearer')
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .then(res => {
+          expect(res.body).toEqual(noTokenError);
           done();
         })
         .catch(err => done(err));

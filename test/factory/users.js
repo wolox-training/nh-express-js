@@ -8,4 +8,7 @@ factory.define('user', user, {
   password: factory.chance('word', { length: 8 })
 });
 
-exports.generateUsers = n => factory.createMany('user', n).then(users => users.map(u => u.dataValues));
+exports.generateUsers = async n => {
+  const users = await factory.createMany('user', n);
+  return users.map(u => u.dataValues);
+};
