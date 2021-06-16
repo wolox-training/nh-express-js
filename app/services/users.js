@@ -3,6 +3,7 @@ const logger = require('../logger');
 const { databaseError } = require('../errors');
 const { user: userModel } = require('../models');
 const { serializeUser } = require('../serializers/users');
+const { pagination } = require('../helpers/pagination');
 const { USER_CREATE_ERROR, USER_FIND_ERROR, LIST_USERS_ERROR } = require('../../config/constants');
 
 const create = async user => {
@@ -29,9 +30,8 @@ const findByEmail = async email => {
 const checkPassword = (user, password) => bcrypt.compare(password, user.password);
 
 const getAll = async (per_page, page) => {
-  const offset = (page - 1) * per_page;
   try {
-    const users = await userModel.findAll({ offset, limit: per_page });
+    const users = await pagination(userModel, per_page, page);
     return users.map(user => serializeUser(user));
   } catch (error) {
     logger.error(error);
