@@ -12,7 +12,6 @@ const signUp = async (req, res, next) => {
         logger.error(ADMIN_CONFLICT);
         return next(errors.conflict(ADMIN_CONFLICT));
       }
-
       const updatedUser = await usersService.update({ ...userFound, type: 'admin' });
       return res.status(200).send(updatedUser);
     }

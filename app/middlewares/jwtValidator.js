@@ -8,38 +8,34 @@ const {
   ADMIN_TOKEN_ERROR
 } = require('../../config/constants');
 
+const tokenValidation = header => {
+  if (!header) return errors.unauthorized(NO_TOKEN_ERROR);
+  const [bearer, token] = header.split(' ');
+  if (bearer !== 'Bearer') return errors.unauthorized(BEARER_ERROR);
+  if (!token) return errors.unauthorized(NO_TOKEN_ERROR);
+  try {
+    const payload = jwt.decode(token, config.common.jwt.secret);
+    return payload;
+  } catch (err) {
+    return errors.unauthorized(INVALID_TOKEN_ERROR);
+  }
+};
+
 const validateToken = (req, res, next) => {
   const header = req.header('Authorization');
-  if (!header) return next(errors.unauthorized(NO_TOKEN_ERROR));
-
-  const [bearer, token] = header.split(' ');
-  if (bearer !== 'Bearer') return next(errors.unauthorized(BEARER_ERROR));
-
-  if (!token) return next(errors.unauthorized(NO_TOKEN_ERROR));
-  try {
-    jwt.decode(token, config.common.jwt.secret);
-    return next();
-  } catch (err) {
-    return next(errors.unauthorized(INVALID_TOKEN_ERROR));
-  }
+  const type = tokenValidation(header);
+  if (typeof type === 'string') return next();
+  return next(type);
 };
 
 const validateAdmin = (req, res, next) => {
   const header = req.header('Authorization');
-  if (!header) return next(errors.unauthorized(NO_TOKEN_ERROR));
-
-  const [bearer, token] = header.split(' ');
-  if (bearer !== 'Bearer') return next(errors.unauthorized(BEARER_ERROR));
-
-  if (!token) return next(errors.unauthorized(NO_TOKEN_ERROR));
-
-  try {
-    const type = jwt.decode(token, config.common.jwt.secret);
+  const type = tokenValidation(header);
+  if (typeof type === 'string') {
     if (type === 'admin') return next();
     return next(errors.unauthorized(ADMIN_TOKEN_ERROR));
-  } catch (err) {
-    return next(errors.unauthorized(INVALID_TOKEN_ERROR));
   }
+  return next(type);
 };
 
 module.exports = {
