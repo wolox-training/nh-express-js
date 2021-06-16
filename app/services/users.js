@@ -39,9 +39,16 @@ const getAll = async (per_page, page) => {
   }
 };
 
+const update = async user => {
+  const userFound = await userModel.findByPk(user.id);
+  const userUpdated = await userFound.update(user);
+  return serializeUser(userUpdated);
+};
+
 module.exports = {
   create,
   findByEmail,
   checkPassword,
-  getAll
+  getAll,
+  update
 };

@@ -29,10 +29,9 @@ const signIn = async (req, res, next) => {
       logger.error(USER_CREDENTIALS_ERROR);
       return next(errors.unauthorized(USER_CREDENTIALS_ERROR));
     }
-
     const passwordCheck = await usersService.checkPassword(userFound, userData.password);
     if (passwordCheck) {
-      const token = createToken(userData.email);
+      const token = createToken(userFound.type);
       return res.status(200).send({ token });
     }
     logger.error(USER_CREDENTIALS_ERROR);
