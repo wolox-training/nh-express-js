@@ -38,6 +38,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send(newUserLogin);
       ({ token } = auth.body);
+      token = `Bearer ${token}`;
     });
 
     it('should get users when no pagination parameter is given', async done => {

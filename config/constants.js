@@ -10,5 +10,9 @@ exports.LIST_USERS_ERROR = 'Cannot get users';
 
 exports.USER_CREDENTIALS_ERROR = 'Login failed: Invalid username or password';
 
+exports.BEARER_ERROR = 'Not a Bearer token';
 exports.NO_TOKEN_ERROR = 'No token provided';
 exports.INVALID_TOKEN_ERROR = 'Invalid or expired token';
+
+exports.ADMIN_TOKEN_ERROR = 'Token provided does not have admin access';
+exports.ADMIN_CONFLICT = 'User was already an admin';
