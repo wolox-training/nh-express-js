@@ -1,14 +1,17 @@
-const numberFactsService = require('../services/number_facts');
-const errors = require('../errors');
+const weetsService = require('../services/weets');
 const logger = require('../logger');
 
-const getWeet = async (req, res, next) => {
-  const weetResponse = await numberFactsService.getNumberFact();
-  if (weetResponse.status === 200) return res.status(200).send(weetResponse.data);
-  logger.error(`The service responded with the code ${weetResponse.status}`);
-  return next(errors.defaultError(`The service responded with the code ${weetResponse.status}`));
+const createWeet = async (req, res, next) => {
+  try {
+    const weetResponse = await weetsService.create(req.user_id);
+    logger.info(weetResponse);
+    return res.status(201).send(weetResponse);
+  } catch (error) {
+    logger.error(error.message);
+    return next(error);
+  }
 };
 
 module.exports = {
-  getWeet
+  createWeet
 };

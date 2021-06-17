@@ -7,7 +7,7 @@ const { validateUser, validateEmailPassword } = require('./middlewares/userValid
 
 exports.init = app => {
   app.get('/health', healthCheck);
-  app.get('/weet', weetsController.getWeet);
+  app.post('/weets', validateToken, weetsController.createWeet);
   app.get('/users', validateToken, usersController.listUsers);
   app.post('/users', validateUser, usersController.signUp);
   app.post('/users/sessions', validateEmailPassword, usersController.signIn);
