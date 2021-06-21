@@ -30,8 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       position: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
       }
     },
     {
