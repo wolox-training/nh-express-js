@@ -1,4 +1,6 @@
 exports.serializeWeet = weet => ({
+  id: weet.id,
   content: weet.content,
-  createdAt: weet.createdAt
+  user_id: weet.user_id,
+  created_at: weet.createdAt
 });
