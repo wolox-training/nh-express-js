@@ -37,6 +37,9 @@ module.exports = {
     },
     {
       name: 'Admin'
+    },
+    {
+      name: 'Weets'
     }
   ],
   paths,

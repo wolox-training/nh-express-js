@@ -20,3 +20,5 @@ exports.INVALID_TOKEN_ERROR = 'Invalid or expired token';
 
 exports.ADMIN_TOKEN_ERROR = 'Token provided does not have admin access';
 exports.ADMIN_CONFLICT = 'User was already an admin';
+
+exports.GET_WEETS_ERROR = 'Cannot get weets';
