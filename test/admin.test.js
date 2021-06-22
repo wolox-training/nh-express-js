@@ -11,7 +11,7 @@ const {
   notBearerTokenError,
   noTokenError
 } = require('./data/users');
-const { adminUser, adminUserRes, adminTokenError } = require('./data/admin');
+const { adminUser, adminUserRes, adminTokenError, repeatedAdminError } = require('./data/admin');
 const { adminUserMock } = require('./mocks/admin');
 
 describe('Admin', () => {
@@ -61,6 +61,25 @@ describe('Admin', () => {
         .expect(200)
         .then(res => {
           expect(res.body).toEqual(newUserRes);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should create admin user when admin authenticated', async done => {
+      await request(app)
+        .post('/admin/users')
+        .set('Authorization', adminToken)
+        .send(adminUser);
+
+      await request(app)
+        .post('/admin/users')
+        .set('Authorization', adminToken)
+        .send(adminUser)
+        .expect('Content-Type', /json/)
+        .expect(409)
+        .then(res => {
+          expect(res.body).toEqual(repeatedAdminError);
           done();
         })
         .catch(err => done(err));

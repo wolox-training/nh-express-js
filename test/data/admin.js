@@ -1,5 +1,5 @@
-const { UNAUTHORIZED } = require('../../app/errors');
-const { ADMIN_TOKEN_ERROR } = require('../../config/constants');
+const { UNAUTHORIZED, CONFLICT } = require('../../app/errors');
+const { ADMIN_TOKEN_ERROR, ADMIN_CONFLICT } = require('../../config/constants');
 
 const adminUser = {
   name: 'Nicolas Alberto',
@@ -19,8 +19,14 @@ const adminTokenError = {
   internal_code: UNAUTHORIZED
 };
 
+const repeatedAdminError = {
+  message: ADMIN_CONFLICT,
+  internal_code: CONFLICT
+};
+
 module.exports = {
   adminUser,
   adminUserRes,
-  adminTokenError
+  adminTokenError,
+  repeatedAdminError
 };

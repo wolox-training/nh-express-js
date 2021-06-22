@@ -23,19 +23,22 @@ const tokenValidation = header => {
 
 const validateToken = (req, res, next) => {
   const header = req.header('Authorization');
-  const type = tokenValidation(header);
-  if (typeof type === 'string') return next();
-  return next(type);
+  const payload = tokenValidation(header);
+  if ('type' in payload) {
+    req.user_id = payload.id;
+    return next();
+  }
+  return next(payload);
 };
 
 const validateAdmin = (req, res, next) => {
   const header = req.header('Authorization');
-  const type = tokenValidation(header);
-  if (typeof type === 'string') {
-    if (type === 'admin') return next();
+  const payload = tokenValidation(header);
+  if ('type' in payload) {
+    if (payload.type === 'admin') return next();
     return next(errors.unauthorized(ADMIN_TOKEN_ERROR));
   }
-  return next(type);
+  return next(payload);
 };
 
 module.exports = {
