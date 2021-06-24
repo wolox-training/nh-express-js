@@ -5,7 +5,8 @@ const {
   USER_CREDENTIALS_ERROR,
   NO_TOKEN_ERROR,
   INVALID_TOKEN_ERROR,
-  BEARER_ERROR
+  BEARER_ERROR,
+  USER_POSITIONS
 } = require('../../config/constants');
 
 const newUser = {
@@ -18,7 +19,8 @@ const newUser = {
 const newUserRes = {
   name: newUser.name,
   last_name: newUser.last_name,
-  email: newUser.email
+  email: newUser.email,
+  position: USER_POSITIONS[0]
 };
 
 const repeatedEmailError = {
@@ -88,6 +90,33 @@ const notBearerTokenError = {
   internal_code: UNAUTHORIZED
 };
 
+const userListRes = [
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[0]
+  },
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[1]
+  },
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[2]
+  },
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[3]
+  },
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[4]
+  },
+  {
+    ...newUserRes,
+    position: USER_POSITIONS[5]
+  }
+];
+
 module.exports = {
   newUser,
   newUserRes,
@@ -107,5 +136,6 @@ module.exports = {
   invalidToken,
   invalidTokenError,
   notBearerToken,
-  notBearerTokenError
+  notBearerTokenError,
+  userListRes
 };

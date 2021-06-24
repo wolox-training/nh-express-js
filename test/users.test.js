@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const paginationHelper = require('../app/helpers/pagination');
 const { generateUsers } = require('./factory/users');
 const {
   newUser,
@@ -20,8 +21,10 @@ const {
   invalidToken,
   invalidTokenError,
   notBearerToken,
-  notBearerTokenError
+  notBearerTokenError,
+  userListRes
 } = require('./data/users');
+const { userListMock } = require('./mocks/users');
 
 describe('Users', () => {
   beforeEach(() => {
@@ -130,6 +133,21 @@ describe('Users', () => {
         .expect(401)
         .then(res => {
           expect(res.body).toEqual(noTokenError);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should get users positions alias correctly', async done => {
+      const paginationSpy = jest.spyOn(paginationHelper, 'pagination');
+      paginationSpy.mockImplementation(userListMock);
+      await request(app)
+        .get('/users')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body).toEqual(userListRes);
           done();
         })
         .catch(err => done(err));

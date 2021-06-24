@@ -1,4 +1,18 @@
 module.exports = {
+  id: {
+    name: 'id',
+    in: 'path',
+    type: 'integer',
+    example: 1,
+    required: true
+  },
+  score: {
+    name: 'score',
+    in: 'body',
+    type: 'integer',
+    example: -1,
+    required: true
+  },
   per_page: {
     name: 'per_page',
     in: 'query',

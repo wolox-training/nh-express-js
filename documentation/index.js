@@ -37,6 +37,12 @@ module.exports = {
     },
     {
       name: 'Admin'
+    },
+    {
+      name: 'Weets'
+    },
+    {
+      name: 'Rates'
     }
   ],
   paths,

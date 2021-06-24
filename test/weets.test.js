@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const { generateWeets } = require('./factory/weets');
 const numberFactsService = require('../app/services/number_facts');
 const { newUser, newUserLogin } = require('./data/users');
 const { longWeetError } = require('./data/weets');
@@ -8,6 +9,34 @@ const { longWeetMock } = require('./mocks/weets');
 describe('Weets', () => {
   beforeEach(() => {
     jest.resetModules();
+  });
+
+  describe('GET /weets', () => {
+    let token = '';
+    beforeEach(async () => {
+      await request(app)
+        .post('/users')
+        .send(newUser);
+      await generateWeets(50);
+      const auth = await request(app)
+        .post('/users/sessions')
+        .send(newUserLogin);
+      ({ token } = auth.body);
+      token = `Bearer ${token}`;
+    });
+
+    it('should get weets when no pagination parameter is given', async done => {
+      await request(app)
+        .get('/weets')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body).toHaveLength(25);
+          done();
+        })
+        .catch(err => done(err));
+    });
   });
 
   describe('POST /weets', () => {
@@ -23,7 +52,7 @@ describe('Weets', () => {
       token = `Bearer ${token}`;
     });
 
-    it('should create weet user when user authenticated', async done => {
+    it('should create weet when user authenticated', async done => {
       await request(app)
         .post('/weets')
         .set('Authorization', token)
