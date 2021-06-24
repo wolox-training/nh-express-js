@@ -40,6 +40,9 @@ module.exports = {
     },
     {
       name: 'Weets'
+    },
+    {
+      name: 'Rates'
     }
   ],
   paths,

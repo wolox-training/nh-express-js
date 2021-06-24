@@ -20,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       score: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        validate: { isIn: [-1, 1] }
+        validate: {
+          isIn: [[-1, 1]]
+        }
       }
     },
     {

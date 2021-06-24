@@ -11,7 +11,8 @@ const adminUser = {
 const adminUserRes = {
   name: adminUser.name,
   last_name: adminUser.last_name,
-  email: adminUser.email
+  email: adminUser.email,
+  position: 'developer'
 };
 
 const adminTokenError = {

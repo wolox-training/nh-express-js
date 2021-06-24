@@ -22,3 +22,9 @@ exports.ADMIN_TOKEN_ERROR = 'Token provided does not have admin access';
 exports.ADMIN_CONFLICT = 'User was already an admin';
 
 exports.GET_WEETS_ERROR = 'Cannot get weets';
+
+exports.RATE_CREATE_ERROR = 'Cannot create rate';
+exports.RATE_FIND_ERROR = 'Cannot get rate';
+exports.RATE_UPDATE_ERROR = 'Cannot update rate';
+
+exports.USER_POSITIONS = ['developer', 'lead', 'tl', 'em', 'head', 'ceo'];
